@@ -23,9 +23,34 @@ namespace stages.first
             control.ActivateNextStage();
 
 
-            while(true)
-            {
+            float pitch = 0;
+            float yaw = 0;
 
+            while (true)
+            {
+                if(flightInfo.MeanAltitude >= 50000)
+                {
+                    pitch = 45;
+                    if(flightInfo.Pitch>pitch)
+                    {
+                        control.Pitch = -1;
+                    } else if(flightInfo.Pitch<pitch)
+                    {
+                        control.Pitch = 1;
+                    }
+                } else
+                {
+                    if (flightInfo.Pitch > pitch)
+                    {
+                        control.Pitch = -1;
+                    }
+                    else if (flightInfo.Pitch < pitch)
+                    {
+                        control.Pitch = 1;
+                    }
+                    
+                    //if(flightInfo.)
+                }
             }
         }
     }
