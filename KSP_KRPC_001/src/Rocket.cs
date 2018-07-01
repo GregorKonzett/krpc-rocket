@@ -28,14 +28,7 @@ namespace src
                    rpcPort: rpc,
                    streamPort: stream))
             {
-                var spaceCenter = connection.SpaceCenter();
-                var vessel = spaceCenter.ActiveVessel;
-
-                var control = vessel.Control;
-                var flightInfo = vessel.Flight();
-
-
-                FirstStage firstStage = new FirstStage(control, flightInfo);
+                FirstStage firstStage = new FirstStage(connection);
 
                 firstStage.startStage();
             }

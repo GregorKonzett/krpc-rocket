@@ -1,8 +1,7 @@
 ﻿using general;
+using KRPC.Client;
 using KRPC.Client.Services.SpaceCenter;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace stages.first
 {
@@ -10,47 +9,39 @@ namespace stages.first
     {
         private Control control;
         private Flight flightInfo;
+        private Connection con;
+        private Vessel vessel;
 
-        public FirstStage(Control control, Flight flight)
+        public FirstStage(Connection con)
         {
-            this.control = control;
-            this.flightInfo = flight;
+            this.con = con;
+            var spaceCenter = con.SpaceCenter();
+            this.vessel = spaceCenter.ActiveVessel;
+
+            this.control = vessel.Control;
+            this.flightInfo = vessel.Flight();
+
         }
 
         public void startStage()
         {
-            control.Throttle = (float) 0.5;
+            //control.Throttle = (float) 0.5;
             control.ActivateNextStage();
 
 
-            float pitch = 0;
+            float pitch = 90;
             float yaw = 0;
+
+            var pitchStream = con.AddStream(() => flightInfo.Pitch);
+            float curPitch = 0.0f;
+
+            var altitudeStream = con.AddStream(() => flightInfo.MeanAltitude);
+            double curAltitude = 0.0;
 
             while (true)
             {
-                if(flightInfo.MeanAltitude >= 50000)
-                {
-                    pitch = 45;
-                    if(flightInfo.Pitch>pitch)
-                    {
-                        control.Pitch = -1;
-                    } else if(flightInfo.Pitch<pitch)
-                    {
-                        control.Pitch = 1;
-                    }
-                } else
-                {
-                    if (flightInfo.Pitch > pitch)
-                    {
-                        control.Pitch = -1;
-                    }
-                    else if (flightInfo.Pitch < pitch)
-                    {
-                        control.Pitch = 1;
-                    }
-                    
-                    //if(flightInfo.)
-                }
+                curPitch = pitchStream.Get();
+                curAltitude = altitudeStream.Get();
             }
         }
     }
