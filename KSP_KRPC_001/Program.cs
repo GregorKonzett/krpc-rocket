@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Net;
+using src;
 
-namespace KSP_KRPC_001
+class Program
 {
-    class Program
+    public static void Main()
     {
-        static void Main(string[] args)
-        {
-            Console.WriteLine("Hello World!");
-        }
+        Rocket rocket = new Rocket("127.0.0.1", 50000, 50001);
+
+        rocket.launch();
     }
 }
